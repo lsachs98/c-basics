@@ -1,0 +1,18 @@
+#include "list.h"
+
+Node node_at(Node head, int n){
+
+  if(head != NULL){
+
+    Node nextNode = head;
+
+    while(nextNode->next != NULL && n > 0){
+
+      nextNode = nextNode->next;
+      n--;
+
+    }
+  }
+
+  return nextNode;
+}

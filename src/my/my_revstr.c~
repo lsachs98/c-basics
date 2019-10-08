@@ -1,0 +1,28 @@
+#include "my.h"
+
+int my_revstr(char* str){
+
+  if(str == NULL)
+    {
+      return -1;
+    }
+
+  int strlen = my_strlen(str);
+  char temp;
+  
+  int low = 0;
+  int high = strlen-1;
+  
+  while((high-low) > 1){
+
+    temp = str[high];
+    str[high] = str[low];
+    str[low] = temp;
+    high--;
+    low++;
+
+  }
+
+  return strlen;
+
+}

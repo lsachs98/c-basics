@@ -1,0 +1,6 @@
+#include "my.h"
+
+char* my_strconcat(char* a, char* b)
+{
+  return my_strdup(my_strcat(b,a));
+}

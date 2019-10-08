@@ -1,0 +1,18 @@
+#include "my.h"
+
+char* my_strdup(char* str)
+{
+
+  if(str == NULL)
+    return NULL;
+
+  int strlen = my_strlen(str);
+
+  char* dup = (char*) malloc((strlen + 1) * sizeof(char));
+
+  for(int i = 0; i < strlen; i++)
+    dup[i] = str[i];
+
+  return dup;
+
+}

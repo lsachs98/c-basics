@@ -1,0 +1,57 @@
+#include "../../include/my.h"
+
+void my_num_base(int num, char* str){
+
+  int strlen = my_strlen(str);
+
+  if(strlen == 1){
+    for(int i = 0; i < strlen; i++)
+      my_char(str[0]);
+
+    return;
+
+  }
+
+#include "../../include/my.h"
+
+void my_int(int i)
+{
+
+  if(i == '\0')
+    return;
+
+  int negative = 0;
+  if(i < 0)
+    {
+    my_char('-');
+    i++;
+    i *= -1;
+    }
+
+  while(i > strlen - 1)
+    {
+
+      int pow = 1;
+      int toprint = 0;
+
+      while(pow * strlen < i)
+	{
+	  pow = pow * strlen;
+
+	}
+
+      toprint = i / pow;
+      my_char(str[toprint]);
+      i = i % pow;
+
+    }
+  if(negative == 1)
+    i++;
+  my_char(str[i]);
+
+}
+
+
+
+
+}

@@ -1,0 +1,17 @@
+#include "list.h"
+
+void add_node(Node toAdd, Node* head){
+
+  if(toAdd != NULL && head != NULL){
+
+    if(*head == NULL)
+      *head = toAdd;
+
+    else{
+
+      toAdd->next = *head;
+      *head = toAdd;
+
+    }
+  }
+}

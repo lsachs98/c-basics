@@ -1,0 +1,31 @@
+#include "list.h"
+
+void add_node_at(Node toAdd, Node* head, int n){
+
+  struct s_node* nextNode = NULL;
+
+  if(head != NULL && toAdd != NULL){
+
+    if(n == 0 || *head == NULL)
+      add_node(toAdd, head);
+
+    else{
+
+      nextNode = *head;
+      n--;
+
+      while(n > 0 && nextNode->next != NULL){
+
+	n--;
+	nextnode = nextNode->next;
+
+      }
+
+   }
+      
+    toAdd->next = nextNode->next;
+    nextNode->next = toAdd;
+
+    }
+  }
+}

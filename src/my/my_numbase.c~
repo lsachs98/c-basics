@@ -1,0 +1,67 @@
+#include "../../include/my.h"
+
+void my_num_base(int num, char* str){
+
+  if(str == NULL)
+    return; 
+
+  int strlen = my_strlen(str);
+
+  if(strlen == 1)
+    {
+
+      if(num < 0) 
+	{
+	  my_char('-');
+	  for(int i = 0; i > num; i--)
+	    my_char(str[0]);
+	}
+ 
+    for(int i = 0; i < num; i++)
+      {
+      my_char(str[0]);
+      }
+
+    return;
+
+    }
+
+
+  if(num == '\0')
+    return;
+
+  int negative = 0;
+  if(num < 0)
+    {
+      negative = 1;
+      my_char('-');
+      num++;
+      num *= -1;
+    }
+
+  while(num > strlen - 1)
+    {
+
+      int pow = strlen;
+      int toprint = 0;
+
+      while(pow * strlen < num)
+	{
+	  pow = pow * strlen;
+
+	}
+
+      toprint = num / pow;
+      my_char(str[toprint]);
+      num = num % pow;
+
+    }
+  if(negative == 1)
+    num++;
+  my_char(str[num]);
+
+}
+
+
+
+

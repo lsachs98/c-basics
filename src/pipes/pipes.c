@@ -1,0 +1,159 @@
+#include "my.h"
+#include <sys/wait.h>
+#include <sys/types.h>
+
+int main(int argc, char** argv){
+
+  char* toPrint = (char*)malloc(100*sizeof(char));
+  int pipe1[2];//parent to child comm
+  int pipe2[2];//child to gc comm
+  
+  if(argc > 1){
+    
+    char** newVect = &argv[1];
+    toPrint = my_vect2str(newVect);
+
+  }
+
+  else{
+
+    my_str("you screwed up");
+    exit(1);
+
+  }
+
+  my_str(toPrint);
+  my_str("\n");
+ 
+  if(pipe(pipe1) == -1 || pipe(pipe2) == -2){
+
+    my_str("PIPE ERROR");
+    exit(1);
+
+  }
+  
+  pid_t pid = fork();
+
+  if(pid < 0){
+
+    my_str("FORK ERROR");
+    exit(1);
+
+  }
+
+  if(pid > 0){//parent
+
+    if(close(pipe1[0]) < 0){
+
+      my_str("CLOSE ERROR");
+      exit(1);
+
+    }
+
+    my_str("Parent says: ");
+    my_str(toPrint);
+    my_str("\n");
+
+    if(write(pipe1[1], toPrint, my_strlen(toPrint)) < 0){
+
+      my_str("WRITE ERROR");
+      exit(1);
+
+    }
+
+    free(toPrint);
+
+    if(close(pipe1[1]) < 0){
+
+      my_str("CLOSE ERROR");
+      exit(1);
+
+    }
+
+    wait(NULL);
+    wait(NULL);
+
+  }
+
+  else{
+
+    pid = fork();
+
+    if(pid < 0){
+
+    my_str("FORK ERROR");
+    exit(1);
+
+    }
+
+    if(pid > 0){
+//child
+      char buff[100] = "";
+      
+      int readVal = read(pipe1[0], &buff, 100);
+
+      if(readVal < 0){
+
+	my_str("READ ERROR");
+	exit(1);
+
+      }
+
+      
+      my_str("Child says: ");
+      my_str(buff);
+      my_str("\n");
+
+      if(write(pipe2[1], &buff, readVal) < 0){
+
+	my_str("WRITE ERROR");
+	exit(1);
+
+      }
+
+      if(close(pipe1[0]) < 0 ||  close(pipe2[1]) < 0){
+
+	my_str("CLOSE ERROR");
+	exit(1);
+
+      }
+      wait(NULL);
+      wait(NULL);
+
+    }
+
+    else{
+    //grandchild
+
+      char buff[100] = {0};
+      
+      int readVal = read(pipe2[0], &buff, 100);
+
+      if(readVal < 0){
+
+	my_str("READ ERROR");
+	exit(1);
+
+      }
+      
+      my_str("Grandchild says: ");
+      my_str(buff);
+      my_str("\n");
+
+      if(close(pipe2[0])<0){
+
+	my_str("CLOSE ERROR");
+	exit(1);
+
+      }
+
+    }
+
+    
+
+
+  }
+
+  
+
+}

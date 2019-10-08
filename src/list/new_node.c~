@@ -1,0 +1,16 @@
+#include "list.h"
+
+Node new_node(void* elem, Node nextNode, Node prevNode){
+	
+  Node toAdd = NULL;
+    
+  if(elem != NULL){
+   
+    toAdd = (Node) malloc(sizeof(struct s_node));
+    toAdd->elem = elem;
+    toAdd->next = nextNode;
+    toAdd->prev = prevNode;
+  }
+
+  return toAdd;
+}

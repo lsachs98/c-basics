@@ -1,0 +1,24 @@
+#include "../../include/my.h"
+
+int my_revstr(char* str){
+
+  if(str == NULL)
+    {
+      return -1;
+    }
+
+  int strlen = my_strlen(str);
+  char charstore = '';
+  int mid = (strlen - 1)/2;
+
+  if((strlen % 2) == 0)
+    {
+      charstore = str[mid];
+      str[mid] = str[mid + 1];
+
+    }
+int
+
+  for(int i = 1; (mid + i) < strlen
+
+}

@@ -1,0 +1,14 @@
+#include "my.h"
+
+char* my_strnconcat(char* a, char* b, int n)
+{
+
+  char* bstr = b;
+  if(my_strlen(b) > n)
+    {
+      bstr = (char*) malloc((sizeof(char) + 1) * n);
+      bstr = my_strncpy(bstr, b, n);
+    }
+  return my_strdup(my_strcat(bstr,a));
+
+}

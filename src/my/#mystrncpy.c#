@@ -1,0 +1,35 @@
+#include "../../include/my.h"
+
+char* my_strncpy(char* dst, char* src, int n)
+{
+
+  if(dst == NULL)
+    return NULL;
+
+  if(src == NULL)
+    return NULL;
+
+  if(n == 0)
+    return NULL;
+
+  int copylen = 0;
+  int srclen = my_strlen(src);
+  int destlen = my_strlen(src);
+
+  if(strlen(dst) >= strlen(src))
+      copylen = srclen;
+
+  else 
+    coupylen = dstlen;
+
+  for(int i = 0; i < copylen && i < n; i++)
+    dst[i] = scr[i];
+
+  dst[i] = '\0';
+ 
+
+
+
+  return dst;
+
+}

@@ -1,0 +1,17 @@
+#include "../../include/my.h"
+
+int my_strrindex(char* str, char c)
+{
+  int found = -1;
+  int i = 0;
+  while(str[i] != NULL)
+    {
+      if(str[i] == c)
+	{
+	  found = i;
+	}
+      i++;
+    }
+
+  return found;
+}

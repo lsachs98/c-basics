@@ -1,0 +1,119 @@
+#include "my.h"
+#include <sys/wait.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <signal.h>
+
+static pid_t cPid = 0;
+
+void sigHandler(int sigNum){
+
+  if(cPid > 0 && waitpid(cPid, NULL, WNOHANG)==0)
+    kill(cPid, SIGINT);
+
+}
+
+int main(){
+
+  char* filePath;
+  filePath = getcwd(NULL, 0);
+  signal(SIGINT, sigHandler);
+
+  while(1){
+
+    my_str("\nBAD BITCH MINISHELL: ");
+    my_str(filePath);
+    my_str(" $: ");
+    char buff[256];
+    char c;
+
+    for(int i = 0; i < 255; i++){
+     
+      if(read(STDIN_FILENO,&c,1) == 1){
+	
+	if(c=='\0' || c=='\n'){
+	  buff[i] = '\0';
+	  break;
+	}
+
+	else
+	  buff[i] = c;
+	/* my_str(" read: "); */
+	/* my_char(c); */
+	/* my_char('\n'); */
+      }
+
+      else
+	break;
+
+    }
+
+    buff[255] = '\0';
+    
+    char** input = my_str2vect(buff);
+    int err = 0;
+    char* cmd = input[0];
+
+    /* my_str(buff); */
+    /* my_char('\n'); */
+    /* my_str(cmd); */
+    /* my_char('\n'); */
+    if (cmd == NULL) continue;
+    else if(my_strcmp(cmd, "cd")==0){
+
+      free(filePath);
+      err = chdir(input[1]);
+      filePath = getcwd(NULL, 0);
+
+      if(err != 0){
+	
+	my_str("\n");
+	my_str(input[1]);
+	my_str(" is not a valid path. Try again pretty please.\n");
+
+      }
+
+    }
+
+    else if(my_strcmp(cmd, "exit")==0){
+
+      my_str("byeeeee bitches\n");
+      exit(0);
+
+    }
+
+    else if(my_strcmp(cmd, "help") == 0){
+
+      my_str("lmao you expect me to help you? \njk fine I will, you can exit using exit, change direcory with cd filepath and really anything else as long as it's normally valid idk I'm usually confuswed. Also you can ask for help.\n");
+
+    }
+
+    else{
+
+      cPid = fork();
+
+      if(cPid < 0){
+
+	my_str("FORK ERROR\n");
+	exit(1);
+
+      }
+
+      if(cPid > 0)
+	wait(NULL);
+
+      else{
+	
+	if(execvp(input[0], input) != 0){
+
+	  my_str("???? bish wut");
+	  exit(0);
+
+	} 
+
+      }
+
+    }
+  }
+
+}

@@ -1,0 +1,13 @@
+#include "list.h"
+
+void traverse_string(Node head){
+
+  if(head != NULL){
+
+    int numNodes = count_s_nodes(head);
+
+    for(int i = 0; i < numNodes; i++)
+      print_string(node_at(head, i)->elem);
+
+  }
+}

@@ -1,0 +1,129 @@
+#define _POSIX_SOURCE
+#include <signal.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <strings.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h> 
+#define h_addr h_addr_list[0] 
+
+void error(const char *msg){
+
+    perror(msg);
+    exit(0);
+}
+
+int main(int argc, char *argv[]){
+  
+  char input[256];
+
+  if (argc !=  3) {
+
+    printf("Please enter in the form: %s [host] [port]\n", argv[0]);
+    exit(1);
+
+  }
+  //printf("hahaha");
+
+  int namelen;
+  char buffer[256];
+
+  while(namelen < 0 || namelen >= 12){
+
+    namelen = 0;
+    bzero(buffer, 256);
+    printf("Please choose a username of under 12 characters: ");
+    fgets(buffer,255,stdin);
+
+    for(int i = 0; i < strlen(buffer); i++){
+
+      if(buffer[i] != '\n' && buffer[i] != ' ' && buffer[i] != '	')
+	namelen++;
+    }
+
+    if(namelen < 0 || namelen >= 12)
+      bzero(buffer, 256);
+
+  }
+    
+  int portno = atoi(argv[2]);
+  int sockfd = socket(AF_INET, SOCK_STREAM, 0);
+  if (sockfd < 0) 
+    error("socket error");
+
+  struct hostent* server = gethostbyname(argv[1]);
+  if (server == NULL) {
+
+    fprintf(stderr,"who is she? don't know her - host error\n");
+    exit(0);
+
+  }
+
+  struct sockaddr_in serv_addr;
+
+  bzero((char *) &serv_addr, sizeof(serv_addr));
+  serv_addr.sin_family = AF_INET;
+
+  bcopy((char *)server->h_addr,(char *)&serv_addr.sin_addr.s_addr,server->h_length);
+
+  serv_addr.sin_port = htons(portno);
+
+  if(connect(sockfd,(struct sockaddr *) &serv_addr,sizeof(serv_addr)) < 0)
+    error("connection error");
+ 
+  if(write(sockfd, buffer, 255) < 0) error("error setting username\n");
+  
+pid_t pid = fork();
+        
+ if(pid < 0)
+   error("fork error\n");
+
+ else if(pid == 0){
+
+   while(1){
+
+     bzero(input, 256);
+
+     if(read(sockfd,input,255) < 0) 
+       error("read error\n");
+     
+     printf("%s\n", input);
+
+   }
+
+ }else{
+   
+   while(1){
+
+     fgets(buffer, 255, stdin);
+     
+     if(strncmp(buffer, "/exit", 5) == 0){
+
+       printf("autobots, roll out\n");
+       close(sockfd);
+       kill(0, SIGKILL);
+       kill(1, SIGKILL);
+
+     }
+
+     if(write(sockfd, buffer, strlen(buffer)) < 0){
+
+       kill(0, SIGKILL);
+       error("write error");
+
+     }
+
+     bzero(buffer, 256);
+
+   }
+
+ }
+
+ close(sockfd);
+ return 0;
+
+}

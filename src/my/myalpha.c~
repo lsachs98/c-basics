@@ -1,0 +1,12 @@
+#include "../../include/my.h"
+
+void my_alpha()
+{
+
+  for(int i = 60; i < 91; i ++)
+    {
+      my_char((char)i);
+
+    }
+
+}

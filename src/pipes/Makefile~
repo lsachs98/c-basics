@@ -1,0 +1,4 @@
+IDIR=../../include/
+CC=gcc
+OBJS=$(SRCS:.c=.o)
+CFLAGS = -I$(IDIR) -Wall -Werror --pedantic

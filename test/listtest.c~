@@ -1,0 +1,23 @@
+#include "..\include\list.h"
+
+Node int_list_setup(int numNodes){
+
+  Node* head = NULL;
+  int i;
+  void* elem = &i;
+
+  for(i=0; i<numNodes; i++){
+    add_elem(elem, head);
+  }
+
+  return *head;
+
+}
+
+
+int main(){
+  my_str("hello");
+  debug_int(int_list_setup(2));
+
+  return 0;
+}

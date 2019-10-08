@@ -1,0 +1,22 @@
+#include "../../include/my.h"
+
+int my_strfind(char* str, char c)
+{
+
+  if(str == NULL)
+    return NULL;
+
+  int strlen = my_strlen(str);
+
+  if(c == '\0')
+    return (char*) str[strlen];
+
+  for(int charindex = 0; charindex < strlen; charindex ++)
+    {
+      if(str[charindex] == c)
+	return (char*) str[charindex];
+    }
+
+  return NULL;
+
+}
